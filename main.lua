@@ -24,6 +24,7 @@ require( "player.lua" )
    tiles_visible = ( map_display_w / tile_w ) * ( map_display_h / tile_h )
 
 
+   is_rocking = false
 
 --variables
 local screentext
@@ -31,16 +32,19 @@ local screentext
 
 
 function love.load()
-
-electrolyte_sprite = love.graphics.newImage("/data/img/charsprite.png")
-tileset_batch = love.graphics.newSpriteBatch( tileset_image, tiles_visible)
-
-love.keyboard.setKeyRepeat( 0, 0 )
-
-speed = tile_w
+--level
+	currlevel = 1
 
 
-game_init()
+	electrolyte_sprite = love.graphics.newImage("/data/img/charsprite.png")
+	tileset_batch = love.graphics.newSpriteBatch( tileset_image, tiles_visible)
+
+	love.keyboard.setKeyRepeat( 0, 0 )
+
+	speed = tile_w
+
+
+	game_init()
 
 end
 
@@ -54,13 +58,21 @@ end
 function love.update(dt)
 
    if love.keyboard.isDown("right") then
-      player_x = player_x + (speed * dt)
+		player_x = player_x + (speed * dt)
    elseif love.keyboard.isDown("left") then
-      player_x = player_x - (speed * dt)
+		player_x = player_x - (speed * dt)
    elseif love.keyboard.isDown("down") then
-      player_y = player_y + (speed * dt)
+		player_y = player_y + (speed * dt)
    elseif love.keyboard.isDown("up") then
-      player_y = player_y - (speed * dt)
+		player_y = player_y - (speed * dt)
+   elseif love.keyboard.isDown("f5") then
+		game_init()
+   elseif love.keyboard.isDown("r") then
+		rock_out()
+   elseif love.keyboard.isDown("e") then
+	--DO SOMETHING
+   elseif love.keyboard.isDown("escape") then
+		love.event.push("q"); --QUIT
    end
 
 	player_x = clamp(0, map_w, player_x)
@@ -72,7 +84,6 @@ end
 
 
 function love.draw()
-
 	love.graphics.draw(electrolyte_sprite, player_x, player_y)
 end
 
@@ -80,12 +91,24 @@ end
 
 
 
-
 function game_init()
-
+	currlevel = 1
 	player_init()
 
+	love.audio.play(backing)
+
 end
+
+
+function rock_out()
+
+
+	if is_rocking == false then {
+		love.audio.play(music[math.random(table.getn(music))]) --ROCK OUT
+		is_rocking = true
+		}
+	end
+
 
 function clamp(min, max, param)
 		if param < min then
@@ -97,4 +120,7 @@ function clamp(min, max, param)
 		end
 
 end
+
+
+
 
