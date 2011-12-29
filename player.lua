@@ -6,6 +6,9 @@ player_max_health = 2
 
 function player_init()
 	player_health = player_max_health
+	player_x = 128
+	player_y = 128
+
 
 end
 

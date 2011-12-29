@@ -31,9 +31,14 @@ local screentext
 
 
 function love.load()
-electrolyte_sprite = love.graphics.newImage("/data/img/charsprite.png")
 
+electrolyte_sprite = love.graphics.newImage("/data/img/charsprite.png")
 tileset_batch = love.graphics.newSpriteBatch( tileset_image, tiles_visible)
+
+love.keyboard.setKeyRepeat( 0, 0 )
+
+speed = tile_w
+
 
 game_init()
 
@@ -46,8 +51,20 @@ end
 
 
 
-function love.update()
+function love.update(dt)
 
+   if love.keyboard.isDown("right") then
+      player_x = player_x + (speed * dt)
+   elseif love.keyboard.isDown("left") then
+      player_x = player_x - (speed * dt)
+   elseif love.keyboard.isDown("down") then
+      player_y = player_y + (speed * dt)
+   elseif love.keyboard.isDown("up") then
+      player_y = player_y - (speed * dt)
+   end
+
+	player_x = clamp(0, map_w, player_x)
+	player_y = clamp(0, map_h, player_y)
 
 end
 
@@ -56,49 +73,28 @@ end
 
 function love.draw()
 
+	love.graphics.draw(electrolyte_sprite, player_x, player_y)
 end
 
 
 
-function love.keypressed( key, unicode )
 
-	if key == 'w' then --up
-
-	elseif key == 'a' then --left
-
-	elseif key == 's' then --down
-
-	elseif key == 'd' then --right
-
-	elseif key == 'r' then --reload
-	game_init()
-
-	end
-
-end
-
-
-function love.keyreleased( key, unicode )
-
-	if key == 'w' then
-
-	elseif key == 'a' then
-
-	elseif key == 's' then
-
-	elseif key == 'd' then
-
-	end
-
-
-end
 
 
 function game_init()
+
 	player_init()
-	player_hit()
-	player_hit()
+
 end
 
+function clamp(min, max, param)
+		if param < min then
+			return min
+		elseif param > max then
+			return max
+		else
+			return param
+		end
 
+end
 
