@@ -23,8 +23,10 @@ require( "player.lua" )
    tile_h = 64
    tiles_visible = ( map_display_w / tile_w ) * ( map_display_h / tile_h )
 
-
+	--music helpers
    is_rocking = false
+   lasttrack = backing
+
 
 --variables
 local screentext
@@ -50,13 +52,9 @@ end
 
 
 
-
-
-
-
-
 function love.update(dt)
 
+--keyboard
    if love.keyboard.isDown("right") then
 		player_x = player_x + (speed * dt)
    elseif love.keyboard.isDown("left") then
@@ -77,6 +75,12 @@ function love.update(dt)
 
 	player_x = clamp(0, map_w, player_x)
 	player_y = clamp(0, map_h, player_y)
+
+--music
+	if lasttrack:isStopped() then
+		is_rocking = false
+	end
+
 
 end
 
@@ -103,11 +107,16 @@ end
 function rock_out()
 
 
-	if is_rocking == false then {
-		love.audio.play(music[math.random(table.getn(music))]) --ROCK OUT
+
+	if is_rocking == false then
+		lasttrack = music[math.random(table.getn(music))]
+		lasttrack:play() --ROCK OUT
 		is_rocking = true
-		}
+
 	end
+
+
+end
 
 
 function clamp(min, max, param)
@@ -120,7 +129,3 @@ function clamp(min, max, param)
 		end
 
 end
-
-
-
-
