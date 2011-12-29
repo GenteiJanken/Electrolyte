@@ -1,8 +1,8 @@
 -- Electrolyte/src/main.lua
 -- Main game file
 
---require( audiosources.lua )
---require( player.lua )
+require( "audiosources.lua" )
+require( "player.lua" )
 
 --constants
 
@@ -35,8 +35,12 @@ electrolyte_sprite = love.graphics.newImage("/data/img/charsprite.png")
 
 tileset_batch = love.graphics.newSpriteBatch( tileset_image, tiles_visible)
 
+game_init()
 
 end
+
+
+
 
 
 
@@ -58,13 +62,16 @@ end
 
 function love.keypressed( key, unicode )
 
-	if key == 'W' then
+	if key == 'w' then --up
 
-	elseif key == 'A' then
+	elseif key == 'a' then --left
 
-	elseif key == 'S' then
+	elseif key == 's' then --down
 
-	elseif key == 'D' then
+	elseif key == 'd' then --right
+
+	elseif key == 'r' then --reload
+	game_init()
 
 	end
 
@@ -73,15 +80,25 @@ end
 
 function love.keyreleased( key, unicode )
 
-	if key == 'W' then
+	if key == 'w' then
 
-	elseif key == 'A' then
+	elseif key == 'a' then
 
-	elseif key == 'S' then
+	elseif key == 's' then
 
-	elseif key == 'D' then
+	elseif key == 'd' then
 
 	end
 
 
 end
+
+
+function game_init()
+	player_init()
+	player_hit()
+	player_hit()
+end
+
+
+
